@@ -1,7 +1,10 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id "maven-publish"
 }
+
+group = 'com.github.Alluretears'
 
 android {
     compileSdkVersion 30
@@ -33,4 +36,45 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.21"
+}
+
+def githubProperties = new Properties()
+githubProperties.load(new FileInputStream(rootProject.file("github.properties")))
+
+def getVersionName = { ->
+    return "1.0.0" // 仓库版本
+}
+
+def getArtificatId = { ->
+    return "share-wechat-noop" // 仓库Id
+}
+
+publishing {
+    publications {
+        bar(MavenPublication) {
+            groupId 'com.imzhiqiang.android' // 仓库组Id
+            artifactId getArtificatId()
+            version getVersionName()
+            artifact("$buildDir/outputs/aar/${getArtificatId()}-release.aar")
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            /** Configure path of your package repository on Github
+             ** GITHUB_USERID替换成你的GitHub账户Id
+             ** REPOSITORY替换成你的项目名称
+             */
+            url = uri("https://maven.pkg.github.com/Alluretears/ShareSdk")
+            credentials {
+                /** Create github.properties in root project folder file with
+                 ** gpr.usr=GITHUB_USER_ID & gpr.key=PERSONAL_ACCESS_TOKEN
+                 ** Set env variable GPR_USER & GPR_API_KEY if not adding a properties file**/
+
+                username = githubProperties['gpr.usr'] ?: System.getenv("GPR_USER")
+                password = githubProperties['gpr.key'] ?: System.getenv("GPR_API_KEY")
+            }
+        }
+    }
 }
