@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.imzhiqiang.share.wechat">
+
+    <application>
+
+        <activity
+            android:name="com.imzhiqiang.wechat.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <activity-alias
+            android:name="${applicationId}.wxapi.WXEntryActivity"
+            android:exported="true"
+            android:targetActivity="com.imzhiqiang.wechat.WXEntryActivity" />
+
+        <activity
+            android:name="${applicationId}.wxapi.WXEntryActivity"
+            tools:node="remove" />
+
+    </application>
+
+</manifest>
